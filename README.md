@@ -1,2 +1,2 @@
 # mysite
-this is my first site made by me.
+this is first site made by me.
