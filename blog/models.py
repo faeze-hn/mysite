@@ -5,6 +5,10 @@ from django.views.generic import DetailView
 class Category(models.Model):
     name = models.CharField(max_length=225)
 
+    def __str__(self):
+        return f'{self.name}'
+    
+    
 class Post(models.Model):
     image = models.ImageField(upload_to= 'blog/', default='blog/default.jpg')
     author = models.ForeignKey(User, on_delete= models.SET_NULL, null=True)
