@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.views.generic import DetailView
+from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=225)
@@ -22,26 +23,15 @@ class Post(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date =models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created_date']
+
     def __str__(self):
         return f'{self.title} - {self.id}'
     
-
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'post_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        post = self.object
-
-        try:
-            context['prev_post'] = post.get_previous_by_published_date()
-        except Post.DoesNotExist:
-            context['prev_post'] = None
-
-        try:
-            context['next_post'] = post.get_next_by_published_date()
-        except Post.DoesNotExist:
-            context['next_post'] = None
-
-        return context
+    def snippet(self):
+        return self.content[:100] + '...'
+    
+    def get_absolute_url(self):
+        return reverse('blog:single', kwargs={'pid':self.id})
+    
