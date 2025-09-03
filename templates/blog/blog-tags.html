@@ -1,0 +1,12 @@
+<div class="tag-widget">
+    <h4 class="tag-title">Tag Clouds</h4>
+    <div class="tag-cloud">
+        {% for tag in tags %}
+            <a href="{% url 'blog:tag' tag_name=tag.name %}">
+                {{ tag.name }}
+            </a>
+        {% empty %}
+            <p>No tags available</p>
+        {% endfor %}
+    </div>
+</div>
