@@ -2,6 +2,8 @@
 {% load static %}
 {%block content%}
 {% load blog_tags %}
+{% load humanize %}
+
 <!-- start banner Area -->
 <section class="relative about-banner">
 	<div class="overlay overlay-bg"></div>
@@ -103,102 +105,37 @@
 					</div>
 				</div>
 				<div class="comments-area">
-					<h4>05 Comments</h4>
+					<h4>{% comments_count post.id%} comments</h4>
+					{%if comments%}
 					<div class="comment-list">
+						{% for comment in comments %}
+
 						<div class="single-comment justify-content-between d-flex">
 							<div class="user justify-content-between d-flex">
 								<div class="thumb">
 									<img src="{% static 'img/blog/c1.jpg'%}" alt="">
 								</div>
 								<div class="desc">
-									<h5><a href="#">Emilly Blunt</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
+									<h5><a href="#">{{comment.name}}</a></h5>
+									<p class="date">{{comment.created_date|naturalday}} </p>
 									<p class="comment">
-										Never say goodbye till the end comes!
+										{{comment.message}}
 									</p>
 								</div>
 							</div>
+							<!--
 							<div class="reply-btn">
 								<a href="" class="btn-reply text-uppercase">reply</a>
 							</div>
+							-->
 						</div>
+
+						{%empty%}
+						<p>no comments Here</p>
+						{%endfor%}
 					</div>
-					<div class="comment-list left-padding">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="{% static 'img/blog/c2.jpg'%}" alt="">
-								</div>
-								<div class="desc">
-									<h5><a href="#">Elsie Cunningham</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
-									<p class="comment">
-										Never say goodbye till the end comes!
-									</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div>
-						</div>
-					</div>
-					<div class="comment-list left-padding">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="{% static 'img/blog/c3.jpg'%}" alt="">
-								</div>
-								<div class="desc">
-									<h5><a href="#">Annie Stephens</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
-									<p class="comment">
-										Never say goodbye till the end comes!
-									</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div>
-						</div>
-					</div>
-					<div class="comment-list">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="{% static 'img/blog/c4.jpg'%}" alt="">
-								</div>
-								<div class="desc">
-									<h5><a href="#">Maria Luna</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
-									<p class="comment">
-										Never say goodbye till the end comes!
-									</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div>
-						</div>
-					</div>
-					<div class="comment-list">
-						<div class="single-comment justify-content-between d-flex">
-							<div class="user justify-content-between d-flex">
-								<div class="thumb">
-									<img src="{% static 'img/blog/c5.jpg'%}" alt="">
-								</div>
-								<div class="desc">
-									<h5><a href="#">Ina Hayes</a></h5>
-									<p class="date">December 4, 2017 at 3:12 pm </p>
-									<p class="comment">
-										Never say goodbye till the end comes!
-									</p>
-								</div>
-							</div>
-							<div class="reply-btn">
-								<a href="" class="btn-reply text-uppercase">reply</a>
-							</div>
-						</div>
-					</div>
+					{%endif%}
+
 				</div>
 				<div class="comment-form">
 					<h4>Leave a Comment</h4>
@@ -241,7 +178,7 @@
 					{%include 'blog/blog-ads.html'%}
 					{% include 'blog/blog-tags.html' %}
 					{% postcategories %}
-					
+
 					<div class="single-sidebar-widget newsletter-widget">
 						<h4 class="newsletter-title">Newsletter</h4>
 						<p>
@@ -266,7 +203,7 @@
 							You can unsubscribe at any time
 						</p>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
