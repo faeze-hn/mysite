@@ -1,9 +1,12 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404 ,redirect
 from blog.models import Post, Comment
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from blog.forms import CommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+
 
 @login_required
 def blog_view(request,author_username=None,**kwargs):
@@ -37,10 +40,13 @@ def blog_single(request, pid):
     
     posts = Post.objects.filter(status=1)
     post = get_object_or_404(posts, pk=pid)
-    comments = Comment.objects.filter(post = post.id)
-    form = CommentForm()
-    context = {'post': post, 'comments': comments, 'form':form }
-    return render(request, 'blog/blog-single.html', context)
+    if not post.login_required:    
+        comments = Comment.objects.filter(post = post.id)
+        form = CommentForm()
+        context = {'post': post, 'comments': comments, 'form':form }
+        return render(request, 'blog/blog-single.html', context)
+    else:
+        return HttpResponseRedirect(reverse('accounts:login'))
 
 
 def blog_category(request,cat_name):
